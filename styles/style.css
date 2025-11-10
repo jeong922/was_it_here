@@ -1,2 +1,134 @@
 :root {
+  /* 색상 */
+  --color-text: #f4f4f4;
+  --color-bg-1: #ffffff;
+  --color-bg-2: #ebebeb;
+
+  --stage-bg-1: #77d7c8;
+  --stage-bg-2: #4fb3c3;
+  --stage-bg-3: #7c69c7;
+  --stage-bg-4: #8f3f7c;
+
+  --color-correct: #8ed77b;
+  --color-wrong: #e05f6a;
+  --color-highlight: #f7d774;
+
+  --btn-bg: #ffb6a1;
+  --btn-bg-hover: #ffa38a;
+  --btn-bg-active: #ff9076;
+  --btn-text: #2b1e1e;
+
+  /* 폰트 */
+  --font-family: 'Noto Sans', 'Segoe UI', Tahoma, sans-serif;
+  --font-size-md: 1rem; /* 16px 기준 */
+  --font-size-lg: 1.25rem; /* 소제목 */
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-title: 2.5rem; /* 타이틀 */
+
+  /* 여백 / 패딩 */
+  --spacing-xs: 0.25rem; /* 4px */
+  --spacing-sm: 0.5rem; /* 8px */
+  --spacing-md: 1rem; /* 16px */
+  --spacing-lg: 1.5rem; /* 24px */
+  --spacing-xl: 2rem; /* 32px */
+
+  /* 버튼 */
+  --btn-padding-y: 0.75rem; /* 12px */
+  --btn-padding-x: 1.5rem; /* 24px */
+  --btn-border-radius: 0.5rem; /* 8px */
+
+  /* 카드 / 보드 */
+  --card-border-radius: 0.75rem; /* 12px */
+  --board-border-radius: 0.5rem; /* 8px */
+
+  /* 그림자 */
+  --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+}
+
+#app {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game {
+  width: 100%;
+  height: 700px;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-xl);
+  border-radius: var(--board-border-radius);
+  background-color: var(--color-bg-1);
+  box-shadow: var(--shadow-lg);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-title);
+}
+
+.game-rules {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--board-border-radius);
+}
+
+.rules-title {
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  border-bottom: 3px solid #dfdfdf;
+}
+
+.game-rules ul {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.game-rules ul li {
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.5;
+  font-size: var(--font-size-lg);
+}
+
+.game-rules ul li::before {
+  content: '▪';
+  color: var(--color-highlight);
+  font-weight: bold;
+  margin-right: var(--spacing-sm);
+  display: inline-block;
+  min-width: 1rem;
+  text-align: center;
+}
+
+.game-start {
+  display: block;
+  width: 100%;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  background-color: var(--btn-bg);
+  font-size: var(--font-size-lg);
+  border: none;
+  border-radius: var(--btn-border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.game-start:hover {
+  background-color: var(--btn-bg-hover);
 }

@@ -17,6 +17,7 @@ class GameView implements IGameView {
   private makeGameRules() {
     return `
       <div class="game-rules">
+      <span class="rules-title">게임 방법</span>
         <ul>
           <li>2초 동안 보드에 표시되는 정답 위치를 기억하세요.</li>
           <li>표시가 사라지면 제한 시간 30초 동안 정답 칸을 모두 클릭하세요.</li>
@@ -31,7 +32,7 @@ class GameView implements IGameView {
   }
 
   private makeGameTitle() {
-    return `<h1>이건가...?</h1>`;
+    return `<h1 class="title">이건가...?🤔</h1>`;
   }
 }
 
