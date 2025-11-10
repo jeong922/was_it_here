@@ -4,6 +4,10 @@ type GameState = 'ready' | 'playing' | 'stageClear' | 'gameOver' | 'end';
 // 게임 상태, 현재 스테이지 정보, 남은 시간, 기회
 
 export interface IGameModel {
+  gameState: GameState;
+  currentStage: number;
+  timeLeft: number;
+  lives: number;
   startStage: () => void;
 }
 class Game implements IGameModel {
