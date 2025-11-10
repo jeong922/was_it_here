@@ -10,7 +10,6 @@ class GameView implements IGameView {
       <main class="game">
         ${this.makeGameTitle()}
         ${this.makeGameRules()}
-        ${this.makeStartButton()}
       </main>
     `;
   }
@@ -26,12 +25,9 @@ class GameView implements IGameView {
           <li>정답 칸을 모두 찾으면 다음 스테이지로 넘어갈 수 있습니다.</li>
           <li>총 20 스테이지로 구성됩니다.</li>
         </ul>
+        <button class="game-start">시작하기</button>
       </div>
     `;
-  }
-
-  private makeStartButton() {
-    return `<button class="game-start">시작하기</button>`;
   }
 
   private makeGameTitle() {

@@ -29,11 +29,17 @@ class GameController {
     });
   }
 
+  removeRules() {
+    const rules = this.root.querySelector('.game-rules');
+    rules?.remove();
+  }
+
   handleStartClick(): void {
     console.log('시작!');
     // 게임 상태 변경 ready -> playing
     this.game.startStage();
     // 게임 룰 보드판 CSS로 안보이게 처리
+    this.removeRules();
     // 게임 보드 생성
   }
 }
