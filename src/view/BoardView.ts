@@ -3,8 +3,6 @@ import BaseView from './BaseView';
 class BoardView extends BaseView {
   constructor() {
     super('div', 'game-board');
-    // this.boardElement = this.createBoardContainer();
-
     this.render();
   }
 
@@ -20,10 +18,6 @@ class BoardView extends BaseView {
     if (!gridContainer) return;
 
     // 보드 데이터 불러와서 처리
-  }
-
-  getElement(): HTMLElement {
-    return this.element;
   }
 }
 

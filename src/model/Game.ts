@@ -5,7 +5,7 @@ export interface IGameModel {
   currentStage: number;
   timeLeft: number;
   lives: number;
-  startStage: () => void;
+  startStage(): void;
 }
 class Game implements IGameModel {
   // 게임 상태 관련 처리

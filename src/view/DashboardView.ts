@@ -13,10 +13,6 @@ class DashboardView extends BaseView {
       <div class="game-lives">3회</div>
     `);
   }
-
-  getElement(): HTMLElement {
-    return this.element;
-  }
 }
 
 export default DashboardView;

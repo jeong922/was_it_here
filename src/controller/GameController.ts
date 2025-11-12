@@ -2,6 +2,7 @@ import BoardView from '../view/BoardView';
 import DashboardView from '../view/DashboardView';
 import type { IGameModel } from '../model/Game';
 import type { IGameView } from '../view/GameView';
+import RulesView from '../view/RulesView';
 
 class GameController {
   root: HTMLElement;
@@ -15,36 +16,33 @@ class GameController {
     this.init();
   }
 
-  init(): void {
-    this.showScreen();
-    this.addEvent();
+  private init() {
+    const gameElement = this.view.render();
+    this.root.append(gameElement);
+
+    const rules = new RulesView();
+    gameElement.append(rules.getElement());
+
+    rules
+      .getElement()
+      .querySelector('.game-start')
+      ?.addEventListener('click', () => {
+        this.startGame(gameElement, rules);
+      });
   }
 
-  showScreen(): void {
-    this.root.innerHTML = this.view.render(this.game.state);
-  }
-
-  addEvent(): void {
-    const startBtn = this.root.querySelector('.game-start');
-    startBtn?.addEventListener('click', () => {
-      this.handleStartClick();
-    });
-  }
-
-  // 여기 수정을 좀 해야 할듯.. 일단 때려넣어..
-  handleStartClick(): void {
+  private startGame(container: HTMLElement, rules: RulesView) {
     this.game.startStage();
-    this.showScreen();
-    this.addEvent();
-    const boardView = new BoardView();
-    const dashboardView = new DashboardView();
-    const board = boardView.getElement();
-    const dashboard = dashboardView.getElement();
+    rules.getElement().remove();
 
-    const container = this.root.querySelector('.game-container');
-    if (!container) return;
+    const dashboard = new DashboardView();
+    const board = new BoardView();
 
-    container.append(dashboard, board);
+    const gameContainer = document.createElement('div');
+    gameContainer.className = 'game-container';
+    gameContainer.append(dashboard.getElement(), board.getElement());
+
+    container.append(gameContainer);
   }
 }
 

@@ -1,4 +1,8 @@
-abstract class BaseView {
+interface IBaseView {
+  getElement(): HTMLElement;
+}
+
+abstract class BaseView implements IBaseView {
   protected element: HTMLElement;
 
   constructor(tagName: string, className?: string) {
@@ -8,12 +12,12 @@ abstract class BaseView {
     }
   }
 
-  getElement(): HTMLElement {
-    return this.element;
-  }
-
   protected setTemplate(html: string) {
     this.element.innerHTML = html;
+  }
+
+  getElement(): HTMLElement {
+    return this.element;
   }
 }
 
