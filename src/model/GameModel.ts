@@ -7,7 +7,7 @@ export interface IGameModel {
   lives: number;
   startStage(): void;
 }
-class Game implements IGameModel {
+class GameModel implements IGameModel {
   // 게임 상태 관련 처리
   state: GameState = 'ready';
   currentStage: number = 1;
@@ -19,4 +19,4 @@ class Game implements IGameModel {
   }
 }
 
-export default Game;
+export default GameModel;

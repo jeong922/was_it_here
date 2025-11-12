@@ -7,27 +7,20 @@ export interface IBoardView {
   onCellClick(callback: CellClickHandler): void;
 }
 class BoardView extends BaseView implements IBoardView {
-  private stage: number;
   private onCellClickCallback?: (row: number, col: number, value: number) => void;
 
-  constructor(stage: number) {
+  constructor() {
     super('div', 'game-board');
-    this.stage = stage;
-    this.render();
     this.bindEvents();
   }
 
-  private render() {
-    const boardHTML = this.createBoard();
+  render(boardData: number[][]) {
+    const boardHTML = this.createBoard(boardData);
     this.setTemplate(boardHTML);
   }
 
-  private createBoard(): string {
-    const boardData = boards.find((board) => board.stage === this.stage)?.board;
-    if (!boardData) return '<div>보드 데이터를 불러올 수 없습니다.</div>';
-
+  private createBoard(boardData: number[][]): string {
     const size = boardData.length;
-
     const html = `
       <div class="cells" 
            style="display:grid;

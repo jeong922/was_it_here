@@ -1,8 +1,10 @@
 import DashboardView from '../view/DashboardView';
-import type { IGameModel } from '../model/Game';
+import type { IGameModel } from '../model/GameModel';
 import type { IGameView } from '../view/GameView';
 import RulesView from '../view/RulesView';
 import BoardController from './BoardController';
+import BoardModel from '../model/BoardModel';
+import BoardView from '../view/BoardView';
 
 class GameController {
   root: HTMLElement;
@@ -38,7 +40,9 @@ class GameController {
     // 대시보드도 컨트롤러 만들기..?
     const dashboard = new DashboardView();
 
-    const boardController = new BoardController(this.game.currentStage, this.game);
+    const boardModel = new BoardModel(this.game.currentStage);
+    const boardView = new BoardView();
+    const boardController = new BoardController(boardModel, boardView);
 
     const gameContainer = document.createElement('div');
     gameContainer.className = 'game-container';
