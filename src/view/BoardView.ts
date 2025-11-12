@@ -1,23 +1,21 @@
-class BoardView {
-  private boardElement: HTMLElement;
+import BaseView from './BaseView';
 
+class BoardView extends BaseView {
   constructor() {
-    this.boardElement = this.createBoardContainer();
+    super('div', 'game-board');
+    // this.boardElement = this.createBoardContainer();
+
+    this.render();
   }
 
-  createBoardContainer(): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'game-board';
-
-    container.innerHTML = `
+  private render() {
+    this.setTemplate(`
       <div>여기 게임보드 들어감</div>
-    `;
-
-    return container;
+    `);
   }
 
   createBoard(): void {
-    const gridContainer = this.boardElement.querySelector('.game-board');
+    const gridContainer = this.element.querySelector('.game-board');
 
     if (!gridContainer) return;
 
@@ -25,7 +23,7 @@ class BoardView {
   }
 
   getElement(): HTMLElement {
-    return this.boardElement;
+    return this.element;
   }
 }
 

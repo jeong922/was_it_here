@@ -1,24 +1,21 @@
-class DashboardView {
-  dashboardElement: HTMLElement;
+import BaseView from './BaseView';
 
+class DashboardView extends BaseView {
   constructor() {
-    this.dashboardElement = this.createDashboard();
+    super('div', 'game-dashboard');
+    this.render();
   }
 
-  private createDashboard(): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'game-dashboard';
-
-    container.innerHTML = `
-        <div class="game-stage">스테이지 1</div>
-        <div class="game-timer">00:00</div>
-        <div class="game-lives">3회</div>
-    `;
-    return container;
+  private render() {
+    this.setTemplate(`
+      <div class="game-stage">스테이지 1</div>
+      <div class="game-timer">00:00</div>
+      <div class="game-lives">3회</div>
+    `);
   }
 
   getElement(): HTMLElement {
-    return this.dashboardElement;
+    return this.element;
   }
 }
 
