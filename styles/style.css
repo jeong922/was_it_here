@@ -132,3 +132,17 @@ body {
 .game-start:hover {
   background-color: var(--btn-bg-hover);
 }
+
+.game-container {
+  display: flex;
+  flex: 1;
+  gap: var(--spacing-xl);
+}
+
+.game-dashboard {
+  width: 180px;
+}
+
+.game-board {
+  flex-grow: 1;
+}

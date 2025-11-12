@@ -1,15 +1,18 @@
 // 게임 타이틀, 게임 설명 UI, 게임 시작 버튼
 
+import type { GameState } from '../types/game';
+
 export interface IGameView {
-  render(): string;
+  render(gameState: GameState): string;
 }
 
 class GameView implements IGameView {
-  render() {
+  render(gameState: GameState) {
     return `
       <main class="game">
         ${this.makeGameTitle()}
-        ${this.makeGameRules()}
+        ${gameState === 'ready' ? this.makeGameRules() : ''}
+        ${gameState === 'playing' ? this.makeGameContainer() : ''}
       </main>
     `;
   }
@@ -33,6 +36,10 @@ class GameView implements IGameView {
 
   private makeGameTitle() {
     return `<h1 class="title">이건가...?🤔</h1>`;
+  }
+
+  private makeGameContainer() {
+    return `<div class="game-container"></div>`;
   }
 }
 

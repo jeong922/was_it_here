@@ -1,3 +1,5 @@
+import BoardView from '../view/BoardView';
+import DashboardView from '../view/DashboardView';
 import type { IGameModel } from '../model/Game';
 import type { IGameView } from '../view/GameView';
 
@@ -14,12 +16,12 @@ class GameController {
   }
 
   init(): void {
-    this.showStartScreen();
+    this.showScreen();
     this.addEvent();
   }
 
-  showStartScreen(): void {
-    this.root.innerHTML = this.view.render();
+  showScreen(): void {
+    this.root.innerHTML = this.view.render(this.game.state);
   }
 
   addEvent(): void {
@@ -29,18 +31,20 @@ class GameController {
     });
   }
 
-  removeRules() {
-    const rules = this.root.querySelector('.game-rules');
-    rules?.remove();
-  }
-
+  // 여기 수정을 좀 해야 할듯.. 일단 때려넣어..
   handleStartClick(): void {
-    console.log('시작!');
-    // 게임 상태 변경 ready -> playing
     this.game.startStage();
-    // 게임 룰 보드판 CSS로 안보이게 처리
-    this.removeRules();
-    // 게임 보드 생성
+    this.showScreen();
+    this.addEvent();
+    const boardView = new BoardView();
+    const dashboardView = new DashboardView();
+    const board = boardView.getElement();
+    const dashboard = dashboardView.getElement();
+
+    const container = this.root.querySelector('.game-container');
+    if (!container) return;
+
+    container.append(dashboard, board);
   }
 }
 
