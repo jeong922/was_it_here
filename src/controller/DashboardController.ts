@@ -1,7 +1,7 @@
-import type { IGameModel } from '../model/GameModel';
+import type { IGameModel, IObserver } from '../model/GameModel';
 import type { IDashboardView } from '../view/DashboardView';
 
-export interface IDashboardController {
+export interface IDashboardController extends IObserver {
   startTimer(): void;
   updateDashboard(): void;
 }
@@ -14,6 +14,7 @@ class DashboardController implements IDashboardController {
   constructor(view: IDashboardView, model: IGameModel) {
     this.view = view;
     this.model = model;
+    this.model.subscribe(this);
     this.updateDashboard();
   }
 
@@ -25,11 +26,14 @@ class DashboardController implements IDashboardController {
     this.timerId = setInterval(() => {
       if (this.model.timeLeft > 0) {
         this.model.decreaseTime();
-        this.view.updateTimer(this.model.timeLeft);
       } else {
         this.stopTimer();
       }
     }, 1000);
+  }
+
+  update(): void {
+    this.updateDashboard();
   }
 
   private stopTimer(): void {

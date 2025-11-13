@@ -1,7 +1,6 @@
 import type { IBoardModel } from '../model/BoardModel';
 import type { IGameModel } from '../model/GameModel';
 import type IBoardView from '../view/BoardView';
-import type { IDashboardController } from './DashboardController';
 
 interface IBoardController {
   getElement(): void;
@@ -11,13 +10,11 @@ class BoardController implements IBoardController {
   private view: IBoardView;
   private model: IBoardModel;
   private gameModel: IGameModel;
-  private dashboard: IDashboardController;
 
-  constructor(model: IBoardModel, view: IBoardView, gameModel: IGameModel, dashboard: IDashboardController) {
+  constructor(model: IBoardModel, view: IBoardView, gameModel: IGameModel) {
     this.model = model;
     this.view = view;
     this.gameModel = gameModel;
-    this.dashboard = dashboard;
     this.init();
   }
 
@@ -38,8 +35,8 @@ class BoardController implements IBoardController {
         // 고민사항 : 처음 계획은 기회를 총 3번 주기로 했지만
         // 스테이지마다 3번을 주고 스테이지 실패하거나 3번이상 틀리면 기회 감소로 할지..
 
+        // 일단은 전체 기회가 3번이라고 설정
         this.gameModel.decreaseLives();
-        this.dashboard.updateDashboard();
         console.log('남은 기회:', this.gameModel.lives);
         console.log('게임 상태', this.gameModel.state);
       }

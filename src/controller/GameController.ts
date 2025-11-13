@@ -43,7 +43,7 @@ class GameController {
 
     const boardModel = new BoardModel(this.game.currentStage);
     const boardView = new BoardView();
-    const boardController = new BoardController(boardModel, boardView, this.game, dashboardController);
+    const boardController = new BoardController(boardModel, boardView, this.game);
 
     const gameContainer = document.createElement('div');
     gameContainer.className = 'game-container';
