@@ -7,6 +7,7 @@ export interface IGameModel {
   lives: number;
   startStage(): void;
   decreaseTime(): void;
+  decreaseLives(): void;
 }
 class GameModel implements IGameModel {
   // 게임 상태 관련 처리
@@ -19,9 +20,25 @@ class GameModel implements IGameModel {
     this.state = 'showAnswer';
   }
 
+  gameOver() {
+    this.state = 'gameOver';
+  }
+
   decreaseTime(): void {
     if (this.timeLeft > 0) {
       this.timeLeft -= 1;
+    }
+  }
+
+  decreaseLives() {
+    if (this.lives <= 0) {
+      return;
+    }
+
+    this.lives -= 1;
+
+    if (this.lives === 0) {
+      this.gameOver();
     }
   }
 }

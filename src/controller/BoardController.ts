@@ -1,4 +1,5 @@
 import type { IBoardModel } from '../model/BoardModel';
+import type { IGameModel } from '../model/GameModel';
 import type IBoardView from '../view/BoardView';
 
 interface IBoardController {
@@ -8,10 +9,12 @@ interface IBoardController {
 class BoardController implements IBoardController {
   private view: IBoardView;
   private model: IBoardModel;
+  private gameModel: IGameModel;
 
-  constructor(model: IBoardModel, view: IBoardView) {
+  constructor(model: IBoardModel, view: IBoardView, gameModel: IGameModel) {
     this.model = model;
     this.view = view;
+    this.gameModel = gameModel;
     this.init();
   }
 
@@ -31,6 +34,10 @@ class BoardController implements IBoardController {
         // 기회 감소시키기 구현 필요
         // 고민사항 : 처음 계획은 기회를 총 3번 주기로 했지만
         // 스테이지마다 3번을 주고 스테이지 실패하거나 3번이상 틀리면 기회 감소로 할지..
+
+        this.gameModel.decreaseLives();
+        console.log('남은 기회:', this.gameModel.lives);
+        console.log('게임 상태', this.gameModel.state);
       }
 
       if (this.model.isClear()) {
