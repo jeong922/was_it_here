@@ -43,7 +43,7 @@ class GameController {
 
     const boardModel = new BoardModel(this.game.currentStage);
     const boardView = new BoardView();
-    const boardController = new BoardController(boardModel, boardView, this.game);
+    const boardController = new BoardController(boardModel, boardView, this.game, dashboardController);
 
     const gameContainer = document.createElement('div');
     gameContainer.className = 'game-container';
@@ -52,7 +52,7 @@ class GameController {
     container.append(gameContainer);
 
     setTimeout(() => {
-      this.game.state = 'playing';
+      this.game.playGame();
       boardController.showUserBoard();
       dashboardController.startTimer();
     }, 3000);

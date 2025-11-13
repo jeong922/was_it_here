@@ -1,8 +1,9 @@
 import type { IGameModel } from '../model/GameModel';
 import type { IDashboardView } from '../view/DashboardView';
 
-interface IDashboardController {
+export interface IDashboardController {
   startTimer(): void;
+  updateDashboard(): void;
 }
 
 class DashboardController implements IDashboardController {
@@ -38,7 +39,7 @@ class DashboardController implements IDashboardController {
     }
   }
 
-  private updateDashboard(): void {
+  updateDashboard(): void {
     this.view.updateStage(this.model.currentStage);
     this.view.updateTimer(this.model.timeLeft);
     this.view.updateLives(this.model.lives);
