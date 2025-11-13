@@ -1,16 +1,16 @@
 import type { IGameModel } from '../model/GameModel';
-import type DashboardView from '../view/DashboardView';
+import type { IDashboardView } from '../view/DashboardView';
 
 interface IDashboardController {
   startTimer(): void;
 }
 
 class DashboardController implements IDashboardController {
-  private view: DashboardView;
+  private view: IDashboardView;
   private model: IGameModel;
   private timerId?: number;
 
-  constructor(view: DashboardView, model: IGameModel) {
+  constructor(view: IDashboardView, model: IGameModel) {
     this.view = view;
     this.model = model;
     this.updateDashboard();

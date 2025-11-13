@@ -1,7 +1,7 @@
 import { formatTime } from '../utils/formatTime';
 import BaseView from './BaseView';
 
-interface IDashboardView {
+export interface IDashboardView {
   updateTimer(seconds: number): void;
   updateLives(lives: number): void;
   updateStage(stage: number): void;
