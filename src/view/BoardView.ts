@@ -1,5 +1,4 @@
 import BaseView from './BaseView';
-import { boards } from '../data/board';
 import type { CellClickHandler } from '../types/board';
 
 export interface IBoardView {
@@ -33,7 +32,7 @@ class BoardView extends BaseView implements IBoardView {
               .map(
                 (cellValue, colIndex) => `
                   <div 
-                    class="cell" 
+                    class="cell ${cellValue === 1 ? 'correct' : ''}" 
                     data-row="${rowIndex}" 
                     data-col="${colIndex}" 
                     data-value="${cellValue}">
@@ -50,6 +49,7 @@ class BoardView extends BaseView implements IBoardView {
   private bindEvents() {
     this.element.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
+
       if (!target.classList.contains('cell')) return;
 
       const row = Number(target.dataset.row);
@@ -64,6 +64,16 @@ class BoardView extends BaseView implements IBoardView {
 
   onCellClick(callback: CellClickHandler) {
     this.onCellClickCallback = callback;
+  }
+
+  markCellCorrect(row: number, col: number) {
+    const cell = this.getElement().querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+    cell?.classList.add('correct');
+  }
+
+  markCellWrong(row: number, col: number) {
+    const cell = this.getElement().querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+    cell?.classList.add('wrong');
   }
 }
 

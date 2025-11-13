@@ -10,7 +10,7 @@
   --stage-bg-4: #8f3f7c;
 
   --color-base: #eeeeee;
-  --color-correct: #8ed77b;
+  --color-correct: #8cc07f;
   --color-wrong: #e05f6a;
   --color-highlight: #f7d774;
 
@@ -20,7 +20,6 @@
   --btn-text: #2b1e1e;
 
   /* 폰트 */
-  --font-family: 'Noto Sans', 'Segoe UI', Tahoma, sans-serif;
   --font-size-md: 1rem; /* 16px 기준 */
   --font-size-lg: 1.25rem; /* 소제목 */
   --font-size-xl: 1.5rem;
@@ -49,7 +48,7 @@
 }
 
 body {
-  font-family: var(--font-family);
+  font-family: 'Pretendard', 'Inter', sans-serif;
   font-size: var(--font-size-base);
 }
 
@@ -165,4 +164,12 @@ body {
   background: var(--color-base);
   aspect-ratio: 1 / 1;
   cursor: pointer;
+}
+
+.cell.correct {
+  background-color: var(--color-correct);
+}
+
+.cell.wrong {
+  background-color: var(--color-wrong);
 }
