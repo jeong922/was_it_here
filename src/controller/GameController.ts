@@ -5,6 +5,7 @@ import RulesView from '../view/RulesView';
 import BoardController from './BoardController';
 import BoardModel from '../model/BoardModel';
 import BoardView from '../view/BoardView';
+import DashboardController from './DashboardController';
 
 class GameController {
   root: HTMLElement;
@@ -37,8 +38,8 @@ class GameController {
     this.game.startStage();
     rules.getElement().remove();
 
-    // 대시보드도 컨트롤러 만들기..?
     const dashboard = new DashboardView();
+    const dashboardController = new DashboardController(dashboard, this.game);
 
     const boardModel = new BoardModel(this.game.currentStage);
     const boardView = new BoardView();
@@ -49,6 +50,12 @@ class GameController {
     gameContainer.append(dashboard.getElement(), boardController.getElement());
 
     container.append(gameContainer);
+
+    setTimeout(() => {
+      this.game.state = 'playing';
+      boardController.showUserBoard();
+      dashboardController.startTimer();
+    }, 3000);
   }
 }
 
