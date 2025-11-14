@@ -4,6 +4,9 @@ import type { CellClickHandler } from '../types/board';
 export interface IBoardView extends IBaseView {
   getElement(): HTMLElement;
   onCellClick(callback: CellClickHandler): void;
+  render(boardData: number[][]): void;
+  markCellCorrect(row: number, col: number): void;
+  markCellWrong(row: number, col: number): void;
 }
 class BoardView extends BaseView implements IBoardView {
   private onCellClickCallback?: (row: number, col: number, value: number) => void;

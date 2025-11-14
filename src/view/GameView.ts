@@ -14,10 +14,6 @@ class GameView implements IGameView {
     this.root.innerHTML = `<h1 class="title">이건가...?🤔</h1>`;
     return this.root;
   }
-
-  getRoot(): HTMLElement {
-    return this.root;
-  }
 }
 
 export default GameView;

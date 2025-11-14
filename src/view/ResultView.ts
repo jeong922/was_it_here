@@ -16,7 +16,7 @@ class ResultView extends BaseView implements IResultView {
     this.render();
   }
 
-  render(): void {
+  private render(): void {
     this.setTemplate(this.createResult());
   }
 
