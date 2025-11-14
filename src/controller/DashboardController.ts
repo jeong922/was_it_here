@@ -1,4 +1,5 @@
-import type { IGameModel, IObserver } from '../model/GameModel';
+import type { GameEventPayloads, IGameModel, IObserver } from '../model/GameModel';
+import type { GameEventType } from '../types/game';
 import type { IDashboardView } from '../view/DashboardView';
 
 export interface IDashboardController extends IObserver {
@@ -6,10 +7,29 @@ export interface IDashboardController extends IObserver {
   updateDashboard(): void;
 }
 
+type GameEventHandler<T extends GameEventType> = (payload: GameEventPayloads[T]) => void;
+
 class DashboardController implements IDashboardController {
   private view: IDashboardView;
   private model: IGameModel;
   private timerId?: number;
+
+  private eventHandlers: {
+    [K in GameEventType]: GameEventHandler<K>;
+  } = {
+    stateChanged: (payload) => {
+      console.log(payload.state);
+    },
+    timeChanged: (payload) => {
+      this.view.updateTimer(payload.timeLeft);
+    },
+    livesChanged: (payload) => {
+      this.view.updateLives(payload.lives);
+    },
+    stageChanged: (payload) => {
+      this.view.updateStage(payload.stage);
+    },
+  };
 
   constructor(view: IDashboardView, model: IGameModel) {
     this.view = view;
@@ -31,9 +51,9 @@ class DashboardController implements IDashboardController {
       }
     }, 1000);
   }
-
-  update(): void {
-    this.updateDashboard();
+  update<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void {
+    const handler = this.eventHandlers[type];
+    (handler as GameEventHandler<T>)(payload);
   }
 
   private stopTimer(): void {

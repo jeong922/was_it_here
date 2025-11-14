@@ -1,12 +1,18 @@
-import type { GameState } from '../types/game';
+import type { GameEventType, GameState } from '../types/game';
 
+export interface GameEventPayloads {
+  stateChanged: { state: GameState };
+  timeChanged: { timeLeft: number };
+  livesChanged: { lives: number };
+  stageChanged: { stage: number };
+}
 export interface IObserver {
-  update(data?: any): void;
+  update<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void;
 }
 export interface IGameModel {
   subscribe(observer: IObserver): void;
   unsubscribe(observer: IObserver): void;
-  notify(): void;
+  notify<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void;
   state: GameState;
   currentStage: number;
   timeLeft: number;
@@ -17,9 +23,7 @@ export interface IGameModel {
   playGame(): void;
 }
 class GameModel implements IGameModel {
-  // 관찰자 목록
   private observers: IObserver[] = [];
-  // 게임 상태 관련 처리
   state: GameState = 'ready';
   currentStage: number = 1;
   timeLeft: number = 30;
@@ -33,29 +37,30 @@ class GameModel implements IGameModel {
     this.observers = this.observers.filter((obs) => obs !== observer);
   }
 
-  notify(): void {
-    this.observers.forEach((observer) => observer.update());
+  notify<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void {
+    this.observers.forEach((observer) => observer.update(type, payload));
+    console.log(this.observers);
   }
 
   startStage(): void {
     this.state = 'showAnswer';
-    this.notify();
+    this.notify('stateChanged', { state: this.state });
   }
 
   gameOver() {
     this.state = 'gameOver';
-    this.notify();
+    this.notify('stateChanged', { state: this.state });
   }
 
   playGame() {
     this.state = 'playing';
-    this.notify();
+    this.notify('stateChanged', { state: this.state });
   }
 
   decreaseTime(): void {
     if (this.timeLeft > 0) {
       this.timeLeft -= 1;
-      this.notify();
+      this.notify('timeChanged', { timeLeft: this.timeLeft });
     }
   }
 
@@ -65,10 +70,10 @@ class GameModel implements IGameModel {
     }
 
     this.lives -= 1;
-    this.notify();
+    this.notify('livesChanged', { lives: this.lives });
 
     if (this.lives === 0) {
-      this.gameOver();
+      this.notify('stateChanged', { state: this.state });
     }
   }
 }
