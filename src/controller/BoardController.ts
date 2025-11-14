@@ -3,34 +3,34 @@ import type { IGameModel } from '../model/GameModel';
 import type IBoardView from '../view/BoardView';
 
 interface IBoardController {
-  getElement(): void;
+  getElement(): HTMLElement;
 }
 
 class BoardController implements IBoardController {
-  private view: IBoardView;
+  private boardView: IBoardView;
   private model: IBoardModel;
   private gameModel: IGameModel;
 
-  constructor(model: IBoardModel, view: IBoardView, gameModel: IGameModel) {
+  constructor(model: IBoardModel, boardView: IBoardView, gameModel: IGameModel) {
     this.model = model;
-    this.view = view;
+    this.boardView = boardView;
     this.gameModel = gameModel;
     this.init();
   }
 
   private init() {
-    this.view.render(this.model.answerBoard);
+    this.boardView.render(this.model.answerBoard);
   }
 
   showUserBoard() {
-    this.view.render(this.model.userBoard);
-    this.view.onCellClick((row, col) => {
+    this.boardView.render(this.model.userBoard);
+    this.boardView.onCellClick((row, col) => {
       const isCorrect = this.model.markCell(row, col);
 
       if (isCorrect) {
-        this.view.markCellCorrect(row, col);
+        this.boardView.markCellCorrect(row, col);
       } else {
-        this.view.markCellWrong(row, col);
+        this.boardView.markCellWrong(row, col);
         // 기회 감소시키기 구현 필요
         // 고민사항 : 처음 계획은 기회를 총 3번 주기로 했지만
         // 스테이지마다 3번을 주고 스테이지 실패하거나 3번이상 틀리면 기회 감소로 할지..
@@ -42,15 +42,15 @@ class BoardController implements IBoardController {
       }
 
       if (this.model.isClear()) {
-        console.log('스테이지 클리어!');
-        // 스테이지 클리어 UI 렌더링
-        // 아마 모달창으로..?
+        this.gameModel.clearStage();
+      } else if (this.gameModel.lives === 0) {
+        this.gameModel.gameOver();
       }
     });
   }
 
   getElement() {
-    return this.view.getElement();
+    return this.boardView.getElement();
   }
 }
 

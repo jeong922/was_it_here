@@ -116,7 +116,8 @@ body {
   text-align: center;
 }
 
-.game-start {
+.game-start,
+.next-button {
   display: block;
   width: 100%;
   padding: var(--btn-padding-y) var(--btn-padding-x);
@@ -172,4 +173,64 @@ body {
 
 .cell.wrong {
   background-color: var(--color-wrong);
+}
+
+.result-modal {
+  display: none;
+}
+
+.result-modal.active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.result-modal .result {
+  width: 100%;
+  min-height: 520px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-xl);
+  border-radius: var(--board-border-radius);
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-lg);
+}
+
+.stage-state {
+  font-size: var(--font-size-2xl);
+  font-weight: bold;
+}
+
+.result-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-xl);
+  font-size: var(--font-size-lg);
+}
+
+.result-modal .result-info .label {
+  color: #777;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-xl);
+}
+.result-modal .result-info .value {
+  font-weight: bold;
+  color: #333;
 }

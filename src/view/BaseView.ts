@@ -1,4 +1,4 @@
-interface IBaseView {
+export interface IBaseView {
   getElement(): HTMLElement;
 }
 

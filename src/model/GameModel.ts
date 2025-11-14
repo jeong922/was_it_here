@@ -21,6 +21,8 @@ export interface IGameModel {
   decreaseTime(): void;
   decreaseLives(): void;
   playGame(): void;
+  gameOver(): void;
+  clearStage(): void;
 }
 class GameModel implements IGameModel {
   private observers: IObserver[] = [];
@@ -39,7 +41,6 @@ class GameModel implements IGameModel {
 
   notify<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void {
     this.observers.forEach((observer) => observer.update(type, payload));
-    console.log(this.observers);
   }
 
   startStage(): void {
@@ -47,13 +48,18 @@ class GameModel implements IGameModel {
     this.notify('stateChanged', { state: this.state });
   }
 
-  gameOver() {
+  gameOver(): void {
     this.state = 'gameOver';
     this.notify('stateChanged', { state: this.state });
   }
 
-  playGame() {
+  playGame(): void {
     this.state = 'playing';
+    this.notify('stateChanged', { state: this.state });
+  }
+
+  clearStage(): void {
+    this.state = 'stageClear';
     this.notify('stateChanged', { state: this.state });
   }
 
@@ -64,7 +70,7 @@ class GameModel implements IGameModel {
     }
   }
 
-  decreaseLives() {
+  decreaseLives(): void {
     if (this.lives <= 0) {
       return;
     }

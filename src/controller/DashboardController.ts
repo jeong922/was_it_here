@@ -3,6 +3,7 @@ import type { GameEventType } from '../types/game';
 import type { IDashboardView } from '../view/DashboardView';
 
 export interface IDashboardController extends IObserver {
+  getElement(): HTMLElement;
   startTimer(): void;
   updateDashboard(): void;
 }
@@ -18,7 +19,10 @@ class DashboardController implements IDashboardController {
     [K in GameEventType]: GameEventHandler<K>;
   } = {
     stateChanged: (payload) => {
-      console.log(payload.state);
+      const { state } = payload;
+      if (state === 'stageClear' || state === 'gameOver' || state === 'end') {
+        this.stopTimer();
+      }
     },
     timeChanged: (payload) => {
       this.view.updateTimer(payload.timeLeft);
@@ -48,9 +52,13 @@ class DashboardController implements IDashboardController {
         this.model.decreaseTime();
       } else {
         this.stopTimer();
+        if (this.model.state === 'playing') {
+          this.model.gameOver();
+        }
       }
     }, 1000);
   }
+
   update<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void {
     const handler = this.eventHandlers[type];
     (handler as GameEventHandler<T>)(payload);
@@ -67,6 +75,10 @@ class DashboardController implements IDashboardController {
     this.view.updateStage(this.model.currentStage);
     this.view.updateTimer(this.model.timeLeft);
     this.view.updateLives(this.model.lives);
+  }
+
+  getElement(): HTMLElement {
+    return this.view.getElement();
   }
 }
 

@@ -1,7 +1,7 @@
-import BaseView from './BaseView';
+import BaseView, { type IBaseView } from './BaseView';
 import type { CellClickHandler } from '../types/board';
 
-export interface IBoardView {
+export interface IBoardView extends IBaseView {
   getElement(): HTMLElement;
   onCellClick(callback: CellClickHandler): void;
 }
