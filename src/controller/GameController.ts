@@ -37,12 +37,7 @@ class GameController implements IObserver {
     const rules = new RulesView();
     gameElement.append(rules.getElement());
 
-    rules
-      .getElement()
-      .querySelector('.game-start')
-      ?.addEventListener('click', () => {
-        this.startGame(gameElement, rules);
-      });
+    this.bindRulesEvents(rules, gameElement);
   }
 
   update<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void {
@@ -116,12 +111,13 @@ class GameController implements IObserver {
     const rules = new RulesView();
     gameElement.append(rules.getElement());
 
-    rules
-      .getElement()
-      .querySelector('.game-start')
-      ?.addEventListener('click', () => {
-        this.startGame(gameElement, rules);
-      });
+    this.bindRulesEvents(rules, gameElement);
+  }
+
+  private bindRulesEvents(rules: RulesView, container: HTMLElement) {
+    rules.onGameStart(() => {
+      this.startGame(container, rules);
+    });
   }
 }
 

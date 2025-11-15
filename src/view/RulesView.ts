@@ -1,9 +1,15 @@
 import BaseView from './BaseView';
 
-class RulesView extends BaseView {
+export interface IResultView extends BaseView {
+  onGameStart(handler: () => void): void;
+}
+class RulesView extends BaseView implements IResultView {
+  private startHandler?: () => void;
+
   constructor() {
     super('div', 'game-rules');
     this.render();
+    this.attachEventListeners();
   }
 
   private render() {
@@ -19,6 +25,19 @@ class RulesView extends BaseView {
       </ul>
       <button class="game-start">시작하기</button>
     `);
+  }
+
+  private attachEventListeners(): void {
+    this.element.addEventListener('click', (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.classList.contains('game-start')) return;
+
+      this.startHandler?.();
+    });
+  }
+
+  onGameStart(handler: () => void) {
+    this.startHandler = handler;
   }
 }
 
