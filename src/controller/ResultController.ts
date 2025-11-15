@@ -13,6 +13,7 @@ class ResultController implements IResultController {
   constructor(gameModel: IGameModel, resultView: IResultView) {
     this.gameModel = gameModel;
     this.resultView = resultView;
+    this.bindEvents();
     this.gameModel.subscribe(this);
   }
 
@@ -21,15 +22,29 @@ class ResultController implements IResultController {
       const { state } = payload as { state: GameState };
 
       if (state === 'stageClear' || state === 'gameOver' || state === 'end') {
-        this.resultView.updateStageState(state);
-        this.resultView.updateTimer(this.gameModel.timeLeft);
-        this.resultView.updateLives(this.gameModel.lives);
-        this.resultView.updateStage(this.gameModel.currentStage);
+        this.resultView.displayResultUI(state);
+        this.resultView.displayTimer(this.gameModel.timeLeft);
+        this.resultView.displayLives(this.gameModel.lives);
+        this.resultView.displayStage(this.gameModel.currentStage);
         this.resultView.showModal();
       } else {
         this.resultView.hideModal();
       }
     }
+  }
+
+  private bindEvents() {
+    this.resultView.onNext(() => {
+      const state = this.gameModel.state;
+
+      if (state === 'stageClear') {
+        this.gameModel.startNextStage();
+      } else if (state === 'gameOver' || state === 'end') {
+        this.gameModel.resetGame();
+      }
+
+      this.resultView.hideModal();
+    });
   }
 
   getElement(): HTMLElement {

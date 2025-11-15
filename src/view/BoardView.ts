@@ -50,7 +50,7 @@ class BoardView extends BaseView implements IBoardView {
   }
 
   private bindEvents() {
-    this.element.addEventListener('click', (e) => {
+    this.element.addEventListener('click', (e: MouseEvent) => {
       const target = e.target as HTMLElement;
 
       if (!target.classList.contains('cell')) return;
@@ -59,9 +59,7 @@ class BoardView extends BaseView implements IBoardView {
       const col = Number(target.dataset.col);
       const value = Number(target.dataset.value);
 
-      if (this.onCellClickCallback) {
-        this.onCellClickCallback(row, col, value);
-      }
+      this.onCellClickCallback?.(row, col, value);
     });
   }
 

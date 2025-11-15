@@ -2,15 +2,18 @@ import { formatTime } from '../utils/formatTime';
 import BaseView, { type IBaseView } from './BaseView';
 
 export interface IResultView extends IBaseView {
-  updateStageState(state: 'stageClear' | 'gameOver' | 'end'): void;
+  displayResultUI(state: 'stageClear' | 'gameOver' | 'end'): void;
   showModal(): void;
   hideModal(): void;
-  updateTimer(seconds: number): void;
-  updateLives(lives: number): void;
-  updateStage(stage: number): void;
+  displayTimer(seconds: number): void;
+  displayLives(lives: number): void;
+  displayStage(stage: number): void;
+  onNext(handler: () => void): void;
 }
 
 class ResultView extends BaseView implements IResultView {
+  private nextHandler?: () => void;
+
   constructor() {
     super('div', 'result-modal');
     this.render();
@@ -45,38 +48,37 @@ class ResultView extends BaseView implements IResultView {
     `;
   }
 
-  updateStageState(state: 'stageClear' | 'gameOver' | 'end'): void {
+  displayResultUI(state: 'stageClear' | 'gameOver' | 'end'): void {
     const stageStateElement = this.element.querySelector('.stage-state');
-    if (!stageStateElement) return;
+    const button = this.element.querySelector('.next-button');
+    if (!stageStateElement || !button) return;
 
-    switch (state) {
-      case 'stageClear':
-        stageStateElement.textContent = '성공';
-        break;
-      case 'gameOver':
-        stageStateElement.textContent = '실패';
-        break;
-      case 'end':
-        stageStateElement.textContent = '게임 종료';
-        break;
-    }
+    const stateTextMap = {
+      stageClear: { text: '성공', button: '다음 스테이지' },
+      gameOver: { text: '실패', button: '메인 화면으로' },
+      end: { text: '게임 종료', button: '메인 화면으로' },
+    } as const;
+
+    const { text, button: btnText } = stateTextMap[state];
+    stageStateElement.textContent = text;
+    button.textContent = btnText;
   }
 
-  updateTimer(seconds: number): void {
+  displayTimer(seconds: number): void {
     const timerElement = this.element.querySelector('.time');
     if (timerElement) {
       timerElement.textContent = `${formatTime(seconds)}`;
     }
   }
 
-  updateLives(lives: number): void {
+  displayLives(lives: number): void {
     const livesElement = this.element.querySelector('.lives');
     if (livesElement) {
       livesElement.textContent = `${lives}회`;
     }
   }
 
-  updateStage(stage: number): void {
+  displayStage(stage: number): void {
     const stageElement = this.element.querySelector('.stage');
     if (stageElement) {
       stageElement.textContent = `${stage}`;
@@ -89,6 +91,18 @@ class ResultView extends BaseView implements IResultView {
 
   hideModal(): void {
     this.element.classList.remove('active');
+  }
+
+  onNext(handler: () => void) {
+    if (!this.nextHandler) {
+      this.element.addEventListener('click', (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (!target.classList.contains('next-button')) return;
+        this.nextHandler?.();
+      });
+    }
+
+    this.nextHandler = handler;
   }
 }
 

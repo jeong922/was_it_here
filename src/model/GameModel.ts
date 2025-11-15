@@ -23,13 +23,19 @@ export interface IGameModel {
   playGame(): void;
   gameOver(): void;
   clearStage(): void;
+  startNextStage(): void;
+  resetGame(): void;
 }
 class GameModel implements IGameModel {
   private observers: IObserver[] = [];
+  readonly MAX_STAGE = 20;
+  readonly MIN_STAGE = 1;
+  readonly LIVES = 3;
+  readonly TIME = 30;
   state: GameState = 'ready';
-  currentStage: number = 1;
-  timeLeft: number = 30;
-  lives: number = 3;
+  currentStage: number = this.MIN_STAGE;
+  timeLeft: number = this.TIME;
+  lives: number = this.LIVES;
 
   subscribe(observer: IObserver): void {
     this.observers.push(observer);
@@ -41,6 +47,30 @@ class GameModel implements IGameModel {
 
   notify<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void {
     this.observers.forEach((observer) => observer.update(type, payload));
+  }
+
+  startNextStage(): void {
+    if (this.currentStage === this.MAX_STAGE) {
+      return;
+    }
+
+    this.currentStage++;
+    this.timeLeft = this.TIME;
+
+    this.notify('stageChanged', { stage: this.currentStage });
+    this.startStage();
+  }
+
+  resetGame(): void {
+    this.currentStage = this.MIN_STAGE;
+    this.timeLeft = this.TIME;
+    this.lives = this.LIVES;
+    this.state = 'ready';
+
+    this.notify('stageChanged', { stage: this.currentStage });
+    this.notify('timeChanged', { timeLeft: this.timeLeft });
+    this.notify('livesChanged', { lives: this.lives });
+    this.notify('stateChanged', { state: this.state });
   }
 
   startStage(): void {
