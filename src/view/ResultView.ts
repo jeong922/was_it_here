@@ -17,6 +17,7 @@ class ResultView extends BaseView implements IResultView {
   constructor() {
     super('div', 'result-modal');
     this.render();
+    this.attachEventListeners();
   }
 
   private render(): void {
@@ -93,15 +94,16 @@ class ResultView extends BaseView implements IResultView {
     this.element.classList.remove('active');
   }
 
-  onNext(handler: () => void) {
-    if (!this.nextHandler) {
-      this.element.addEventListener('click', (e: MouseEvent) => {
-        const target = e.target as HTMLElement;
-        if (!target.classList.contains('next-button')) return;
-        this.nextHandler?.();
-      });
-    }
+  private attachEventListeners(): void {
+    this.element.addEventListener('click', (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.classList.contains('next-button')) return;
 
+      this.nextHandler?.();
+    });
+  }
+
+  onNext(handler: () => void) {
     this.nextHandler = handler;
   }
 }
