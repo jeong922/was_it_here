@@ -10,6 +10,7 @@ class BoardController implements IBoardController {
   private boardView: IBoardView;
   private model: IBoardModel;
   private gameModel: IGameModel;
+  private clickedCells = new Set<string>();
 
   constructor(model: IBoardModel, boardView: IBoardView, gameModel: IGameModel) {
     this.model = model;
@@ -25,6 +26,14 @@ class BoardController implements IBoardController {
   showUserBoard() {
     this.boardView.render(this.model.userBoard);
     this.boardView.onCellClick((row, col) => {
+      const key = `${row}-${col}`;
+
+      if (this.clickedCells.has(key)) {
+        return;
+      }
+
+      this.clickedCells.add(key);
+
       const isCorrect = this.model.markCell(row, col);
 
       if (isCorrect) {
