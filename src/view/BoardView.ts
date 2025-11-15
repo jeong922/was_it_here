@@ -13,7 +13,7 @@ class BoardView extends BaseView implements IBoardView {
 
   constructor() {
     super('div', 'game-board');
-    this.bindEvents();
+    this.attachEventListeners();
   }
 
   render(boardData: number[][]) {
@@ -49,7 +49,7 @@ class BoardView extends BaseView implements IBoardView {
     return html;
   }
 
-  private bindEvents() {
+  private attachEventListeners() {
     this.element.addEventListener('click', (e: MouseEvent) => {
       const target = e.target as HTMLElement;
 
