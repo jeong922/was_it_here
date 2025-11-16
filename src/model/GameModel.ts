@@ -25,6 +25,7 @@ export interface IGameModel {
   clearStage(): void;
   startNextStage(): void;
   resetGame(): void;
+  gameClear(): void;
 }
 class GameModel implements IGameModel {
   private observers: IObserver[] = [];
@@ -91,6 +92,22 @@ class GameModel implements IGameModel {
   clearStage(): void {
     this.state = 'stageClear';
     this.notify('stateChanged', { state: this.state });
+
+    if (this.currentStage >= this.MAX_STAGE) {
+      this.gameClear();
+      return;
+    }
+
+    this.currentStage += 1;
+    this.timeLeft = this.TIME;
+
+    this.notify('stageChanged', { stage: this.currentStage });
+    this.notify('timeChanged', { timeLeft: this.timeLeft });
+  }
+
+  gameClear() {
+    this.state = 'end';
+    this.notify('stateChanged', { state: this.state });
   }
 
   decreaseTime(): void {
@@ -109,7 +126,7 @@ class GameModel implements IGameModel {
     this.notify('livesChanged', { lives: this.lives });
 
     if (this.lives === 0) {
-      this.notify('stateChanged', { state: this.state });
+      this.gameOver();
     }
   }
 }
