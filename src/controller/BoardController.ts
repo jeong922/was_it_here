@@ -2,8 +2,9 @@ import type { IBoardModel } from '../model/BoardModel';
 import type { IGameModel } from '../model/GameModel';
 import type IBoardView from '../view/BoardView';
 
-interface IBoardController {
+export interface IBoardController {
   getElement(): HTMLElement;
+  showUserBoard(): void;
 }
 
 class BoardController implements IBoardController {
@@ -19,11 +20,11 @@ class BoardController implements IBoardController {
     this.init();
   }
 
-  private init() {
+  private init(): void {
     this.boardView.render(this.model.answerBoard);
   }
 
-  showUserBoard() {
+  showUserBoard(): void {
     this.boardView.render(this.model.userBoard);
     this.boardView.onCellClick((row, col) => {
       const key = `${row}-${col}`;
@@ -51,7 +52,7 @@ class BoardController implements IBoardController {
     });
   }
 
-  getElement() {
+  getElement(): HTMLElement {
     return this.boardView.getElement();
   }
 }

@@ -2,7 +2,7 @@ import type { GameEventPayloads, IGameModel, IObserver } from '../model/GameMode
 import type { GameEventType, GameState } from '../types/game';
 import type { IResultView } from '../view/ResultView';
 
-interface IResultController extends IObserver {
+export interface IResultController extends IObserver {
   getElement(): HTMLElement;
 }
 

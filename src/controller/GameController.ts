@@ -2,23 +2,25 @@ import DashboardView from '../view/DashboardView';
 import type { GameEventPayloads, IGameModel, IObserver } from '../model/GameModel';
 import type { IGameView } from '../view/GameView';
 import RulesView from '../view/RulesView';
-import BoardController from './BoardController';
+import BoardController, { type IBoardController } from './BoardController';
 import BoardModel from '../model/BoardModel';
 import BoardView from '../view/BoardView';
-import DashboardController from './DashboardController';
+import DashboardController, { type IDashboardController } from './DashboardController';
 import ResultView from '../view/ResultView';
-import ResultController from './ResultController';
+import ResultController, { type IResultController } from './ResultController';
 import type { GameEventType } from '../types/game';
+import { setDelay } from '../utils/delay';
 
 class GameController implements IObserver {
+  private readonly STAGE_START_DELAY = 3000;
   root: HTMLElement;
   gameView: IGameView;
   gameModel: IGameModel;
-
-  private boardController?: BoardController;
-  private dashboardController?: DashboardController;
-  private resultController?: ResultController;
+  private boardController?: IBoardController;
+  private dashboardController?: IDashboardController;
+  private resultController?: IResultController;
   private gameContainer!: HTMLElement;
+  private gameElement!: HTMLElement;
 
   constructor(root: HTMLElement, gameView: IGameView, gameModel: IGameModel) {
     this.root = root;
@@ -31,13 +33,13 @@ class GameController implements IObserver {
   }
 
   private init() {
-    const gameElement = this.gameView.render();
-    this.root.append(gameElement);
+    this.gameElement = this.gameView.render();
+    this.root.append(this.gameElement);
 
     const rules = new RulesView();
-    gameElement.append(rules.getElement());
+    this.gameElement.append(rules.getElement());
 
-    this.bindRulesEvents(rules, gameElement);
+    this.bindRulesEvents(rules, this.gameElement);
   }
 
   update<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void {
@@ -46,44 +48,46 @@ class GameController implements IObserver {
       if (state === 'ready') {
         this.returnToMainScreen();
       }
+      return;
     }
 
     if (type === 'stageChanged') {
       const stage = (payload as GameEventPayloads['stageChanged']).stage;
       this.loadBoardForNewStage(stage);
+
+      return;
     }
   }
 
-  private startGame(container: HTMLElement, rules: RulesView) {
-    this.gameModel.startStage();
-    rules.getElement().remove();
+  private createGameComponents() {
+    if (this.dashboardController) return;
 
     const dashboardView = new DashboardView();
     this.dashboardController = new DashboardController(dashboardView, this.gameModel);
 
     const resultView = new ResultView();
     this.resultController = new ResultController(this.gameModel, resultView);
+  }
 
-    const boardModel = new BoardModel(this.gameModel.currentStage);
-    const boardView = new BoardView();
-    this.boardController = new BoardController(boardModel, boardView, this.gameModel);
+  private startGame(container: HTMLElement, rules: RulesView) {
+    rules.getElement().remove();
+
+    this.createGameComponents();
 
     this.gameContainer = document.createElement('div');
     this.gameContainer.className = 'game-container';
 
-    this.root.append(this.resultController.getElement());
-    this.gameContainer.append(this.dashboardController.getElement(), this.boardController.getElement());
-
+    this.root.append(this.resultController!.getElement());
     container.append(this.gameContainer);
 
-    setTimeout(() => {
-      this.gameModel.playGame();
-      this.boardController!.showUserBoard();
-      this.dashboardController!.startTimer();
-    }, 3000);
+    this.gameContainer.append(this.dashboardController!.getElement());
+
+    this.gameModel.startStage();
+
+    this.loadNewBoardAndStartStage(this.gameModel.currentStage);
   }
 
-  private loadBoardForNewStage(stage: number) {
+  private loadNewBoardAndStartStage(stage: number) {
     if (this.boardController) {
       this.boardController.getElement().remove();
     }
@@ -96,28 +100,35 @@ class GameController implements IObserver {
 
     this.dashboardController?.updateDashboard();
 
-    setTimeout(() => {
-      this.gameModel.playGame();
-      this.boardController!.showUserBoard();
-      this.dashboardController!.startTimer();
-    }, 3000);
+    this.startStageSequence();
+  }
+
+  private loadBoardForNewStage(stage: number) {
+    this.loadNewBoardAndStartStage(stage);
   }
 
   private returnToMainScreen() {
     this.gameContainer?.remove();
     this.resultController?.getElement()?.remove();
 
-    const gameElement = this.root.querySelector('.game') as HTMLElement;
     const rules = new RulesView();
-    gameElement.append(rules.getElement());
+    this.gameElement.append(rules.getElement());
 
-    this.bindRulesEvents(rules, gameElement);
+    this.bindRulesEvents(rules, this.gameElement);
   }
 
   private bindRulesEvents(rules: RulesView, container: HTMLElement) {
     rules.onGameStart(() => {
       this.startGame(container, rules);
     });
+  }
+
+  private startStageSequence() {
+    setDelay(() => {
+      this.gameModel.playGame();
+      this.boardController!.showUserBoard();
+      this.dashboardController!.startTimer();
+    }, this.STAGE_START_DELAY);
   }
 }
 
