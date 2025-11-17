@@ -5,9 +5,9 @@ export interface IResultView extends IBaseView {
   displayResultUI(state: 'stageClear' | 'gameOver' | 'end'): void;
   showModal(): void;
   hideModal(): void;
-  displayTimer(seconds: number): void;
-  displayLives(lives: number): void;
-  displayStage(stage: number): void;
+  setResultTimer(seconds: number): void;
+  setResultLives(lives: number): void;
+  setResultStage(stage: number): void;
   onNext(handler: () => void): void;
 }
 
@@ -65,21 +65,21 @@ class ResultView extends BaseView implements IResultView {
     button.textContent = btnText;
   }
 
-  displayTimer(seconds: number): void {
+  setResultTimer(seconds: number): void {
     const timerElement = this.element.querySelector('.time');
     if (timerElement) {
       timerElement.textContent = `${formatTime(seconds)}`;
     }
   }
 
-  displayLives(lives: number): void {
+  setResultLives(lives: number): void {
     const livesElement = this.element.querySelector('.lives');
     if (livesElement) {
       livesElement.textContent = `${lives}회`;
     }
   }
 
-  displayStage(stage: number): void {
+  setResultStage(stage: number): void {
     const stageElement = this.element.querySelector('.stage');
     if (stageElement) {
       stageElement.textContent = `${stage}`;

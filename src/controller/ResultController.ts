@@ -23,9 +23,9 @@ class ResultController implements IResultController {
 
       if (state === 'stageClear' || state === 'gameOver' || state === 'end') {
         this.resultView.displayResultUI(state);
-        this.resultView.displayTimer(this.gameModel.timeLeft);
-        this.resultView.displayLives(this.gameModel.lives);
-        this.resultView.displayStage(this.gameModel.currentStage);
+        this.resultView.setResultTimer(this.gameModel.timeLeft);
+        this.resultView.setResultLives(this.gameModel.lives);
+        this.resultView.setResultStage(this.gameModel.currentStage);
         this.resultView.showModal();
       } else {
         this.resultView.hideModal();
