@@ -8,6 +8,8 @@ export interface IDashboardView extends IBaseView {
   setStage(stage: number): void;
 }
 class DashboardView extends BaseView implements IDashboardView {
+  private updateTimeoutId: number | undefined;
+
   constructor() {
     super('div', 'game-dashboard');
     this.render();
@@ -35,6 +37,11 @@ class DashboardView extends BaseView implements IDashboardView {
     const currentHearts = livesElement.querySelectorAll('.lives-icon');
     const currentCount = currentHearts.length;
 
+    if (this.updateTimeoutId) {
+      clearTimeout(this.updateTimeoutId);
+      this.updateTimeoutId = undefined;
+    }
+
     if (lives < currentCount) {
       const lostCount = currentCount - lives;
       for (let i = 0; i < lostCount; i++) {
@@ -42,8 +49,9 @@ class DashboardView extends BaseView implements IDashboardView {
         lostHeart.classList.add('fading-out');
       }
 
-      setDelay(() => {
+      this.updateTimeoutId = setDelay(() => {
         livesElement.innerHTML = this.renderLivesIcons(lives);
+        this.updateTimeoutId = undefined;
       }, 400);
     } else if (lives > currentCount) {
       livesElement.innerHTML = this.renderLivesIcons(lives);
