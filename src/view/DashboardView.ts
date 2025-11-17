@@ -2,9 +2,9 @@ import { formatTime } from '../utils/formatTime';
 import BaseView, { type IBaseView } from './BaseView';
 
 export interface IDashboardView extends IBaseView {
-  updateTimer(seconds: number): void;
-  updateLives(lives: number): void;
-  updateStage(stage: number): void;
+  setTimer(seconds: number): void;
+  setLives(lives: number): void;
+  setStage(stage: number): void;
 }
 class DashboardView extends BaseView implements IDashboardView {
   constructor() {
@@ -20,21 +20,21 @@ class DashboardView extends BaseView implements IDashboardView {
     `);
   }
 
-  updateTimer(seconds: number): void {
+  setTimer(seconds: number): void {
     const timerElement = this.element.querySelector('.game-timer');
     if (timerElement) {
       timerElement.textContent = formatTime(seconds);
     }
   }
 
-  updateLives(lives: number): void {
+  setLives(lives: number): void {
     const livesElement = this.element.querySelector('.game-lives');
     if (livesElement) {
       livesElement.textContent = `${lives}회`;
     }
   }
 
-  updateStage(stage: number): void {
+  setStage(stage: number): void {
     const stageElement = this.element.querySelector('.game-stage');
     if (stageElement) {
       stageElement.textContent = `스테이지 ${stage}`;

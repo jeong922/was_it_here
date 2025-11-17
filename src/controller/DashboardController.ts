@@ -25,13 +25,13 @@ class DashboardController implements IDashboardController {
       }
     },
     timeChanged: (payload) => {
-      this.view.updateTimer(payload.timeLeft);
+      this.view.setTimer(payload.timeLeft);
     },
     livesChanged: (payload) => {
-      this.view.updateLives(payload.lives);
+      this.view.setLives(payload.lives);
     },
     stageChanged: (payload) => {
-      this.view.updateStage(payload.stage);
+      this.view.setStage(payload.stage);
     },
   };
 
@@ -72,9 +72,9 @@ class DashboardController implements IDashboardController {
   }
 
   updateDashboard(): void {
-    this.view.updateStage(this.model.currentStage);
-    this.view.updateTimer(this.model.timeLeft);
-    this.view.updateLives(this.model.lives);
+    this.view.setStage(this.model.currentStage);
+    this.view.setTimer(this.model.timeLeft);
+    this.view.setLives(this.model.lives);
   }
 
   getElement(): HTMLElement {
