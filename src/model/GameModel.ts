@@ -59,6 +59,8 @@ class GameModel implements IGameModel {
     this.timeLeft = this.TIME;
 
     this.notify('stageChanged', { stage: this.currentStage });
+    this.notify('timeChanged', { timeLeft: this.TIME });
+
     this.startStage();
   }
 
@@ -97,15 +99,9 @@ class GameModel implements IGameModel {
       this.gameClear();
       return;
     }
-
-    this.currentStage += 1;
-    this.timeLeft = this.TIME;
-
-    this.notify('stageChanged', { stage: this.currentStage });
-    this.notify('timeChanged', { timeLeft: this.timeLeft });
   }
 
-  gameClear() {
+  gameClear(): void {
     this.state = 'end';
     this.notify('stateChanged', { state: this.state });
   }
