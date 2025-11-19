@@ -34,7 +34,7 @@ class DashboardView extends BaseView implements IDashboardView {
     const livesElement = this.element.querySelector('.game-lives');
     if (!livesElement) return;
 
-    const currentHearts = livesElement.querySelectorAll('.lives-icon');
+    const currentHearts = Array.from(livesElement.querySelectorAll('.lives-icon'));
     const currentCount = currentHearts.length;
 
     if (this.updateTimeoutId) {
@@ -42,20 +42,25 @@ class DashboardView extends BaseView implements IDashboardView {
       this.updateTimeoutId = undefined;
     }
 
-    if (lives < currentCount) {
-      const lostCount = currentCount - lives;
-      for (let i = 0; i < lostCount; i++) {
-        const lostHeart = currentHearts[i] as HTMLElement;
-        lostHeart.classList.add('fading-out');
-      }
+    const difference = lives - currentCount;
 
-      this.updateTimeoutId = setDelay(() => {
-        livesElement.innerHTML = this.renderLivesIcons(lives);
-        this.updateTimeoutId = undefined;
-      }, 400);
-    } else if (lives > currentCount) {
+    if (difference === 0) return;
+
+    if (difference > 0) {
       livesElement.innerHTML = this.renderLivesIcons(lives);
+      return;
     }
+
+    const lostCount = Math.abs(difference);
+
+    currentHearts.slice(0, lostCount).forEach((heart) => {
+      heart.classList.add('fading-out');
+    });
+
+    this.updateTimeoutId = setDelay(() => {
+      livesElement.innerHTML = this.renderLivesIcons(lives);
+      this.updateTimeoutId = undefined;
+    }, 400);
   }
 
   setStage(stage: number): void {
