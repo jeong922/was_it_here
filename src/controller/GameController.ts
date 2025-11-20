@@ -1,7 +1,7 @@
 import DashboardView from '../view/DashboardView';
 import type { GameEventPayloads, IGameModel, IObserver } from '../model/GameModel';
 import type { IGameView } from '../view/GameView';
-import RulesView from '../view/RulesView';
+import RulesView, { type IRulesView } from '../view/RulesView';
 import BoardController, { type IBoardController } from './BoardController';
 import BoardModel from '../model/BoardModel';
 import BoardView from '../view/BoardView';
@@ -69,7 +69,7 @@ class GameController implements IObserver {
     this.resultController = new ResultController(this.gameModel, resultView);
   }
 
-  private startGame(container: HTMLElement, rules: RulesView) {
+  private startGame(container: HTMLElement, rules: IRulesView) {
     rules.getElement().remove();
 
     this.createGameComponents();
@@ -117,7 +117,7 @@ class GameController implements IObserver {
     this.bindRulesEvents(rules, this.gameElement);
   }
 
-  private bindRulesEvents(rules: RulesView, container: HTMLElement) {
+  private bindRulesEvents(rules: IRulesView, container: HTMLElement) {
     rules.onGameStart(() => {
       this.startGame(container, rules);
     });
