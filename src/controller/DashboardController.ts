@@ -20,6 +20,11 @@ class DashboardController implements IDashboardController {
   } = {
     stateChanged: (payload) => {
       const { state } = payload;
+
+      if (state === 'playing') {
+        this.startTimer();
+      }
+
       if (state === 'stageClear' || state === 'gameOver' || state === 'end') {
         this.stopTimer();
       }
