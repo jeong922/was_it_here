@@ -1,6 +1,6 @@
 import type { IBoardModel } from '../model/BoardModel';
 import type { IGameModel } from '../model/GameModel';
-import type IBoardView from '../view/BoardView';
+import type { IBoardView } from '../view/BoardView';
 
 export interface IBoardController {
   getElement(): HTMLElement;
