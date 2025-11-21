@@ -1,12 +1,12 @@
 import GameModel from '../../src/model/GameModel';
-import type { IObserver } from '../../src/model/GameModel';
+import type { IGameModel, IObserver } from '../../src/model/GameModel';
 
 const createMockObserver = (): IObserver => ({
   update: vi.fn(),
 });
 
 describe('GameModel 테스트', () => {
-  let gameModel: GameModel;
+  let gameModel: IGameModel;
   let mockObserver: IObserver;
 
   beforeEach(() => {

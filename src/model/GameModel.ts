@@ -13,6 +13,10 @@ export interface IGameModel {
   subscribe(observer: IObserver): void;
   unsubscribe(observer: IObserver): void;
   notify<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void;
+  readonly MAX_STAGE: number;
+  readonly MIN_STAGE: number;
+  readonly LIVES: number;
+  readonly TIME: number;
   state: GameState;
   currentStage: number;
   timeLeft: number;

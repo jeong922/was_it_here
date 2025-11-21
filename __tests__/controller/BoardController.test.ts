@@ -4,6 +4,10 @@ import type { IBoardModel } from '../../src/model/BoardModel';
 import type { IGameModel } from '../../src/model/GameModel';
 import type { IBoardView } from '../../src/view/BoardView';
 
+const MOCK_TIME = 30;
+const MOCK_LIVES = 3;
+const MOCK_MAX_STAGE = 20;
+
 describe('BoardController 테스트', () => {
   let boardViewMock: IBoardView;
   let gameModelMock: IGameModel;
@@ -38,6 +42,10 @@ describe('BoardController 테스트', () => {
       subscribe: vi.fn(),
       unsubscribe: vi.fn(),
       notify: vi.fn(),
+      MAX_STAGE: MOCK_MAX_STAGE,
+      MIN_STAGE: 1,
+      LIVES: MOCK_LIVES,
+      TIME: MOCK_TIME,
       currentStage: 1,
       timeLeft: 60,
       lives: 3,
