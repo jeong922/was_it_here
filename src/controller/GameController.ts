@@ -1,15 +1,14 @@
-import RulesController from './RulesController';
-import StageController from './StageController';
 import DashboardView from '../view/DashboardView';
 import RulesView from '../view/RulesView';
 import ResultView from '../view/ResultView';
-import DashboardController, { type IDashboardController } from './DashboardController';
-import ResultController, { type IResultController } from './ResultController';
 import type { GameEventPayloads, IGameModel, IObserver } from '../model/GameModel';
 import type { IGameView } from '../view/GameView';
 import type { GameEventType } from '../types/game';
 import type { IRulesController } from './RulesController';
 import type { IStageController } from './StageController';
+import type { IGameControllerDependencies } from '../main';
+import type { IDashboardController } from './DashboardController';
+import type { IResultController } from './ResultController';
 
 export interface IGameController extends IObserver {
   root: HTMLElement;
@@ -26,17 +25,23 @@ class GameController implements IGameController {
   private resultController: IResultController | null = null;
   private rulesController: IRulesController | null = null;
   private stageController: IStageController | null = null;
+  private readonly dependencies: IGameControllerDependencies;
 
   private gameContainer!: HTMLElement;
   private gameElement!: HTMLElement;
 
-  constructor(root: HTMLElement, gameView: IGameView, gameModel: IGameModel) {
+  constructor(
+    root: HTMLElement,
+    gameView: IGameView,
+    gameModel: IGameModel,
+    dependencies: IGameControllerDependencies
+  ) {
     this.root = root;
     this.gameView = gameView;
     this.gameModel = gameModel;
+    this.dependencies = dependencies;
 
     this.gameModel.subscribe(this);
-
     this.init();
   }
 
@@ -45,7 +50,7 @@ class GameController implements IGameController {
     this.root.append(this.gameElement);
 
     const rulesView = new RulesView();
-    this.rulesController = new RulesController(rulesView, () => {
+    this.rulesController = this.dependencies.createRulesController(rulesView, () => {
       this.startGame();
     });
 
@@ -71,11 +76,9 @@ class GameController implements IGameController {
   private createGameComponents() {
     if (this.dashboardController) return;
 
-    const dashboardView = new DashboardView();
-    this.dashboardController = new DashboardController(dashboardView, this.gameModel);
+    this.dashboardController = this.dependencies.createDashboardController(new DashboardView(), this.gameModel);
 
-    const resultView = new ResultView();
-    this.resultController = new ResultController(this.gameModel, resultView);
+    this.resultController = this.dependencies.createResultController(this.gameModel, new ResultView());
   }
 
   private startGame() {
@@ -91,7 +94,7 @@ class GameController implements IGameController {
 
     this.gameContainer.append(this.dashboardController!.getElement());
 
-    this.stageController = new StageController(this.gameModel, this.gameContainer);
+    this.stageController = this.dependencies.createStageController(this.gameModel, this.gameContainer);
 
     this.gameModel.startStage();
 
@@ -103,9 +106,10 @@ class GameController implements IGameController {
     this.resultController?.getElement()?.remove();
 
     const rulesView = new RulesView();
-    this.rulesController = new RulesController(rulesView, () => {
+    this.rulesController = this.dependencies.createRulesController(rulesView, () => {
       this.startGame();
     });
+
     this.gameElement.append(this.rulesController.getElement());
   }
 }
