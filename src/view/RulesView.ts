@@ -1,6 +1,6 @@
-import BaseView from './BaseView';
+import BaseView, { type IBaseView } from './BaseView';
 
-export interface IRulesView extends BaseView {
+export interface IRulesView extends IBaseView {
   onGameStart(handler: () => void): void;
 }
 class RulesView extends BaseView implements IRulesView {
