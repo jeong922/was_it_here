@@ -1,7 +1,7 @@
 import DashboardView from '../view/DashboardView';
 import type { GameEventPayloads, IGameModel, IObserver } from '../model/GameModel';
 import type { IGameView } from '../view/GameView';
-import RulesView, { type IRulesView } from '../view/RulesView';
+import RulesView from '../view/RulesView';
 import BoardController, { type IBoardController } from './BoardController';
 import BoardModel from '../model/BoardModel';
 import BoardView from '../view/BoardView';
@@ -10,8 +10,16 @@ import ResultView from '../view/ResultView';
 import ResultController, { type IResultController } from './ResultController';
 import type { GameEventType } from '../types/game';
 import { setDelay } from '../utils/delay';
+import type { IRulesController } from './RulesController';
+import RulesController from './RulesController';
 
-class GameController implements IObserver {
+export interface IGameController extends IObserver {
+  root: HTMLElement;
+  gameView: IGameView;
+  gameModel: IGameModel;
+}
+
+class GameController implements IGameController {
   private readonly STAGE_START_DELAY = 3000;
   root: HTMLElement;
   gameView: IGameView;
@@ -19,6 +27,8 @@ class GameController implements IObserver {
   private boardController?: IBoardController;
   private dashboardController?: IDashboardController;
   private resultController?: IResultController;
+  private rulesController?: IRulesController;
+
   private gameContainer!: HTMLElement;
   private gameElement!: HTMLElement;
 
@@ -36,10 +46,12 @@ class GameController implements IObserver {
     this.gameElement = this.gameView.render();
     this.root.append(this.gameElement);
 
-    const rules = new RulesView();
-    this.gameElement.append(rules.getElement());
+    const rulesView = new RulesView();
+    this.rulesController = new RulesController(rulesView, () => {
+      this.startGame();
+    });
 
-    this.bindRulesEvents(rules, this.gameElement);
+    this.gameElement.append(this.rulesController.getElement());
   }
 
   update<T extends GameEventType>(type: T, payload: GameEventPayloads[T]): void {
@@ -69,8 +81,8 @@ class GameController implements IObserver {
     this.resultController = new ResultController(this.gameModel, resultView);
   }
 
-  private startGame(container: HTMLElement, rules: IRulesView) {
-    rules.getElement().remove();
+  private startGame() {
+    this.rulesController!.getElement().remove();
 
     this.createGameComponents();
 
@@ -78,7 +90,7 @@ class GameController implements IObserver {
     this.gameContainer.className = 'game-container';
 
     this.root.append(this.resultController!.getElement());
-    container.append(this.gameContainer);
+    this.gameElement.append(this.gameContainer);
 
     this.gameContainer.append(this.dashboardController!.getElement());
 
@@ -111,16 +123,11 @@ class GameController implements IObserver {
     this.gameContainer?.remove();
     this.resultController?.getElement()?.remove();
 
-    const rules = new RulesView();
-    this.gameElement.append(rules.getElement());
-
-    this.bindRulesEvents(rules, this.gameElement);
-  }
-
-  private bindRulesEvents(rules: IRulesView, container: HTMLElement) {
-    rules.onGameStart(() => {
-      this.startGame(container, rules);
+    const rulesView = new RulesView();
+    this.rulesController = new RulesController(rulesView, () => {
+      this.startGame();
     });
+    this.gameElement.append(this.rulesController.getElement());
   }
 
   private startStageSequence() {
