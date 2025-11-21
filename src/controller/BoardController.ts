@@ -26,30 +26,36 @@ class BoardController implements IBoardController {
 
   showUserBoard(): void {
     this.boardView.render(this.model.userBoard);
-    this.boardView.onCellClick((row, col) => {
-      const key = `${row}-${col}`;
+    this.boardView.onCellClick(this.handleCellClick.bind(this));
+  }
 
-      if (this.clickedCells.has(key)) {
-        return;
-      }
+  private handleCellClick(row: number, col: number): void {
+    const key = `${row}-${col}`;
 
-      this.clickedCells.add(key);
+    if (this.clickedCells.has(key)) {
+      return;
+    }
 
-      const isCorrect = this.model.markCell(row, col);
+    this.clickedCells.add(key);
 
-      if (isCorrect) {
-        this.boardView.markCellCorrect(row, col);
-      } else {
-        this.boardView.markCellWrong(row, col);
-        this.gameModel.decreaseLives();
-      }
+    const isCorrect = this.model.markCell(row, col);
 
-      if (this.model.isClear()) {
-        this.gameModel.clearStage();
-      } else if (this.gameModel.lives === 0) {
-        this.gameModel.gameOver();
-      }
-    });
+    if (isCorrect) {
+      this.boardView.markCellCorrect(row, col);
+    } else {
+      this.boardView.markCellWrong(row, col);
+      this.gameModel.decreaseLives();
+    }
+
+    this.checkGameState();
+  }
+
+  private checkGameState(): void {
+    if (this.model.isClear()) {
+      this.gameModel.clearStage();
+    } else if (this.gameModel.lives === 0) {
+      this.gameModel.gameOver();
+    }
   }
 
   getElement(): HTMLElement {
