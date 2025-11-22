@@ -1,16 +1,20 @@
 # 이건가…?🤔(Was it here..?)
 
-# 🚀 배포
+## 🚀 배포
 
-## [이건가…?🤔(Was it here..?)](https://was-it-here.vercel.app/)
+### [이건가…?🤔(Was it here..?)](https://was-it-here.vercel.app/)
 
-# 🗒️ 프로젝트 기록
+## 🗒️ 프로젝트 기록
 
 자세한 내용은 아래 노션 링크에 있다.
 
 ### [📒 노션 링크](https://www.notion.so/Was-it-here-2a260e4ad07a80909f30f49621bc013b?source=copy_link)
 
-# 🎯 목표
+## ⚙️ 기술
+
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-663399?style=for-the-badge&logo=css&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"> <img src="https://img.shields.io/badge/vitest-10B981?style=for-the-badge&logo=vitest&logoColor=white">
+
+## 🎯 목표
 
 ```
 화려함 보다 근본에 집중해보자
@@ -37,15 +41,15 @@
 
 <br />
 
-# **📜** 설계
+## 📜 설계
 
-## 💡주제 선정 이유
+### 💡주제 선정 이유
 
 주제를 뭘로 할까 고민하다가 게임 종류를 만들면 타입스크립트로 객체지향 프로그래밍을 하면서 그리고 크게 어렵지도 않으면서 혼자 어느 정도 의미있는 프로젝트를 할 수 있지 않을까 생각했다. 어떤 게임을 만들까 하다가 사과 게임은 이전에 한번 만들어봤고~~(코드가 🐶판이긴 하다.)~~ 뭐 없을까 찾아보다가 롤드컵 시즌과 미션 기간이 겹쳐서 작년 MSI때 페이커와 케리아가 유튜브 lol Esports 채널에서 했던 게임이 생각났다. 똑같이는 못만들지만 비슷하게 만들어보기로 결정했다. 아래 어떤 영상을 참고했는지 준비했다.
 
 ### [참고한 게임 유튜브 영상 링크](https://www.youtube.com/watch?v=Y91Mq2JZpLk)
 
-## ⚙️ 기능 목록
+### 📄 기능 목록
 
 1. **초기 화면**
    - 화면은 게임 시작 버튼과 게임 설명으로 구성된다.
@@ -86,14 +90,14 @@
      - 모든 기회를 소진한 경우
      - 스테이지 20을 모두 클리어한 경우
 
-# 🖥️ 화면
+## 🖥️ 화면
 
-## 게임 방법
+### 게임 방법
 
 - 게임 첫 화면에 게임 방법 설명과 게임 시작 버튼이 있다.
 - 게임 시작 버튼을 클릭하면 스테이지 1 부터 게임이 시작 된다.
 
-## 게임 진행
+### 게임 진행
 
 - 3초간 정답 보드를 보여준 후, 유저가 그 위치를 직접 찾아서 클릭하며 모두 찾으면 된다.
 - 만약 잘못된 위치를 클릭하면 기회가 1 감소하고, 모든 기회를 잃으면 게임 오버가 된다.
