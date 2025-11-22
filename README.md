@@ -96,6 +96,7 @@
 
 - 게임 첫 화면에 게임 방법 설명과 게임 시작 버튼이 있다.
 - 게임 시작 버튼을 클릭하면 스테이지 1 부터 게임이 시작 된다.
+  <img width="582" height="678" alt="스크린샷 2025-11-22 231416" src="https://github.com/user-attachments/assets/c7e86e89-6699-4fe4-bb75-706499321c01" />
 
 ### 게임 진행
 
@@ -104,3 +105,5 @@
 - 모든 정답 위치를 찾으면 결과 화면과 다음 스테이지 이동 버튼과 게임 결과 내용을 보여준다.
 - 다음 스테이지 이동 버튼을 클릭하면 다음 스테이지로 이동한다.
 - 마지막 스테이지까지 성공하면 게임 결과와 메인 화면으로 이동하는 버튼을 보여주며, 버튼을 클릭하면 메인 화면으로 이동한다.
+  <img width="694" alt="스크린샷 2025-11-22 231431" src="https://github.com/user-attachments/assets/a5c11714-260f-4493-816b-01dbc03484d3" />
+  <img width="580" alt="스크린샷 2025-11-22 231444" src="https://github.com/user-attachments/assets/eec8cde1-40bc-4e5a-a321-461fd3b0d9cc" />
