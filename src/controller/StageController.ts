@@ -25,10 +25,10 @@ class StageController implements IStageController {
       this.boardController.getElement().remove();
     }
 
-    const boardModel = new this.dependencies.boardModelConstructor(stage);
-    const boardView = new this.dependencies.boardViewConstructor();
+    const boardModel = this.dependencies.createBoardModel(stage);
+    const boardView = this.dependencies.createBoardView();
 
-    this.boardController = new this.dependencies.boardControllerConstructor(boardModel, boardView, this.gameModel);
+    this.boardController = this.dependencies.createBoardController(boardModel, boardView, this.gameModel);
 
     this.gameContainer.append(this.boardController.getElement());
 

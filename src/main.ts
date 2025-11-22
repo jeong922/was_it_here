@@ -15,11 +15,10 @@ import type ResultView from './view/ResultView.ts';
 import type RulesView from './view/RulesView.ts';
 
 export interface IStageControllerDependencies {
-  boardControllerConstructor: new (model: BoardModel, view: BoardView, gameModel: IGameModel) => IBoardController;
-  boardViewConstructor: new () => BoardView;
-  boardModelConstructor: new (stage: number) => BoardModel;
+  createBoardController: (model: BoardModel, view: BoardView, gameModel: IGameModel) => IBoardController;
+  createBoardView: () => BoardView;
+  createBoardModel: (stage: number) => BoardModel;
 }
-
 export interface IGameControllerDependencies {
   createRulesController: (view: RulesView, onStart: () => void) => IRulesController;
   createStageController: (model: IGameModel, container: HTMLElement) => IStageController;
@@ -32,9 +31,9 @@ const gameModel = new GameModel();
 const gameView = new GameView();
 
 const stageDependencies: IStageControllerDependencies = {
-  boardControllerConstructor: BoardController,
-  boardViewConstructor: BoardView,
-  boardModelConstructor: BoardModel,
+  createBoardModel: (stage) => new BoardModel(stage),
+  createBoardView: () => new BoardView(),
+  createBoardController: (model, view, gameModel) => new BoardController(model, view, gameModel),
 };
 
 const gameControllerDependencies: IGameControllerDependencies = {
