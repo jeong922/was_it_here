@@ -47,7 +47,7 @@ class GameController implements IGameController {
 
   private init() {
     this.gameElement = this.gameView.render();
-    this.root.append(this.gameElement);
+    this.root?.append(this.gameElement);
 
     const rulesView = new RulesView();
     this.rulesController = this.dependencies.createRulesController(rulesView, () => {
