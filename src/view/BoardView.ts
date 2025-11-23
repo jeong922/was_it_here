@@ -1,10 +1,10 @@
 import BaseView, { type IBaseView } from './BaseView';
-import type { CellClickHandler } from '../types/board';
+import type { boardType, CellClickHandler } from '../types/board';
 
 export interface IBoardView extends IBaseView {
   getElement(): HTMLElement;
   onCellClick(callback: CellClickHandler): void;
-  render(boardData: number[][]): void;
+  render(boardData: number[][], type: boardType): void;
   markCellCorrect(row: number, col: number): void;
   markCellWrong(row: number, col: number): void;
 }
@@ -16,15 +16,15 @@ class BoardView extends BaseView implements IBoardView {
     this.attachEventListeners();
   }
 
-  render(boardData: number[][]) {
-    const boardHTML = this.createBoard(boardData);
+  render(boardData: number[][], type: boardType) {
+    const boardHTML = this.createBoard(boardData, type);
     this.setTemplate(boardHTML);
   }
 
-  private createBoard(boardData: number[][]): string {
+  private createBoard(boardData: number[][], type: boardType): string {
     const size = boardData.length;
     const html = `
-      <div class="cells" 
+      <div class="cells ${type}" 
            style="display:grid;
                   grid-template-columns:repeat(${size},1fr);
                   grid-template-rows:repeat(${size},1fr);

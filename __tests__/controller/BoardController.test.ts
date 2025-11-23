@@ -70,7 +70,7 @@ describe('BoardController 테스트', () => {
 
   describe('초기화 테스트', () => {
     test('컨트롤러 생성 시 view.render()에 answerBoard를 전달해야 한다', () => {
-      expect(boardViewMock.render).toHaveBeenCalledWith(boardModelMock.answerBoard);
+      expect(boardViewMock.render).toHaveBeenCalledWith(boardModelMock.answerBoard, 'answer');
     });
   });
 
@@ -78,7 +78,7 @@ describe('BoardController 테스트', () => {
     test('showUserBoard() 호출 시 userBoard를 렌더링 하고 onCellClick()을 호출해야 한다.', () => {
       controller.showUserBoard();
 
-      expect(boardViewMock.render).toHaveBeenCalledWith(boardModelMock.userBoard);
+      expect(boardViewMock.render).toHaveBeenCalledWith(boardModelMock.userBoard, 'user');
       expect(boardViewMock.render).toHaveBeenCalledTimes(2);
       expect(boardViewMock.onCellClick).toHaveBeenCalledTimes(1);
       expect(onCellClickCallback).toBeInstanceOf(Function);
