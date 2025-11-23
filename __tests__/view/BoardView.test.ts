@@ -17,7 +17,7 @@ describe('BoardView 테스트', () => {
       [1, 0, 0],
     ];
 
-    boardView.render(boardData);
+    boardView.render(boardData, 'answer');
 
     const cells = document.querySelectorAll('.cell');
     expect(cells.length).toBe(9);
@@ -40,7 +40,7 @@ describe('BoardView 테스트', () => {
 
     boardView.onCellClick(callback);
 
-    boardView.render(boardData);
+    boardView.render(boardData, 'user');
 
     const targetCell = boardView
       .getElement()
@@ -61,7 +61,7 @@ describe('BoardView 테스트', () => {
       [1, 0, 0],
     ];
 
-    boardView.render(boardData);
+    boardView.render(boardData, 'user');
 
     const row = 0;
     const col = 2;
@@ -84,7 +84,7 @@ describe('BoardView 테스트', () => {
       [1, 0, 0],
     ];
 
-    boardView.render(boardData);
+    boardView.render(boardData, 'user');
 
     const row = 0;
     const col = 0;
