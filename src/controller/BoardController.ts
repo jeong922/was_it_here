@@ -21,11 +21,11 @@ class BoardController implements IBoardController {
   }
 
   private init(): void {
-    this.boardView.render(this.model.answerBoard);
+    this.boardView.render(this.model.answerBoard, 'answer');
   }
 
   showUserBoard(): void {
-    this.boardView.render(this.model.userBoard);
+    this.boardView.render(this.model.userBoard, 'user');
     this.boardView.onCellClick(this.handleCellClick.bind(this));
   }
 
