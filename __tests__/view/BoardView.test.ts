@@ -4,12 +4,10 @@ import BoardView from '../../src/view/BoardView';
 let boardView: IBoardView;
 
 describe('BoardView 테스트', () => {
-  boardView = new BoardView();
-
   beforeEach(() => {
     boardView = new BoardView();
     document.body.innerHTML = '';
-    document.body.appendChild(boardView.getElement());
+    document.body.append(boardView.getElement());
   });
 
   test('render()가 호출되면 보드 데이터에 맞게 DOM이 생성되어야 한다.', () => {
